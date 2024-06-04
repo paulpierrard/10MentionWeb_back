@@ -524,7 +524,7 @@
                         <h6 class="text-center">Compter avec <em>COUNT()</em></h6>
                         <ul>
                             <li>
-                                Gra^ce a COUNT on peut compter les ligne de notre table :
+                                Grâce a COUNT on peut compter les ligne de notre table :
                                 <strong>
                                     <code>
                                         SELECT COUNT(*) AS nbrLigne FROM employes
@@ -593,7 +593,7 @@
                                 Sélectioner et afficher seulement les services qui ont plus de deux employer : <br>
                                 <strong>
                                     <code>
-
+                                        SELECT service, COUNT(*) AS nbr_Employes FROM employes GROUP BY service HAVING COUNT(*) > 2;
                                     </code>
                                 </strong>
                             </li>
@@ -658,6 +658,229 @@
                    
                 </div>
             </div>
+            <div class="row border border-dark p-5">
+                <div class="col-sm-12">
+                    <h2 class="text-center">13 - requetes imbriquée</h2>
+                    <hr>
+                    <div class="col-sm-12 mt-5">
+                        <ul>
+                            <li>
+                                Consiste à executer une requette à l'interieur d'une autre requète , encapsuler dans une autre requete, il n'y a pas de limite dans le nombre de niveaux d'imbrication.
+                            </li>
+                            <li>
+                                le resultat de chaque requette imbriquée sert de valeur de référence dans la codition de sélection de la requête de niveau supèrieur
+                            </li>
+                            <li>
+                                afin d'avoire un cas concret et un contxte favorable a   ce type de contexte, nous allpns modèliser la base de données d'une bibilothèque.
+                            </li>
+                        </ul>
+                        <h4 class="text-center">1 - une BDD bibilothèque</h4>
+                        <p>Les sujectz d'une BDD bibilothèque</p>
+                        <ul>
+                            <li>
+                                une tabele des <strong>livres</strong>
+                            </li>
+                            <li>
+                                une table des <strong>abonnés</strong>
+                            </li>
+                        </ul>
+                        <p class="alert alert-danger">
+
+                        </p>
+                        <div class="col-sm-12 row">
+                            <div class="col-sm-12 col-md-4">
+                                <img src="assets/img/abonne.png" alt="image table abonee" class="img-fluid">
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <img src="assets/img/livre.png" alt="image représentent la tabvble des livre" class="img-fluid">
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <img src="assets/img/emprunt.png" alt="table emprunt" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row border border-dark p-5">
+                <div class="col-sm-12">
+                    <h2 class="text-center">13 - requetes imbriquée</h2>
+                    <hr>
+                    <div class="col-sm-12 mt-5">
+                        <ul>
+                            <li>
+                                Consiste à executer une requette à l'interieur d'une autre requète , encapsuler dans une autre requete, il n'y a pas de limite dans le nombre de niveaux d'imbrication.
+                            </li>
+                            <li>
+                                le resultat de chaque requette imbriquée sert de valeur de référence dans la codition de sélection de la requête de niveau supèrieur
+                            </li>
+                            <li>
+                                afin d'avoire un cas concret et un contxte favorable a   ce type de contexte, nous allpns modèliser la base de données d'une bibilothèque.
+                            </li>
+                        </ul>
+                        <h4 class="text-center">1 - une BDD bibilothèque</h4>
+                        <p>Les sujectz d'une BDD bibilothèque</p>
+                        <ul>
+                            <li>
+                                une tabele des <strong>livres</strong>
+                            </li>
+                            <li>
+                                une table des <strong>abonnés</strong>
+                            </li>
+                        </ul>
+                        <p class="alert alert-danger">
+                            Ici, on comence à modéliser notre base de donée en réflechissant à ce qui va aller dedans
+                        </p>
+                        <div class="col-sm-12 row">
+                            <ul>
+                                <li>
+                                    <h6>Création de la BDD</h6>
+                                    <strong>
+                                        <code>
+                                            -> CREATE DATABASE IF NOT EXISTS bibliotheque
+                                            DEFAULT CHARACTER SET = 'utf8mb4';
+                                        </code>
+                                    </strong>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 row">
+                            <ul>
+                                <li>
+                                    <h6>Création de la première table abonnés</h6>
+                                    <strong>
+                                        <code>
+                                           CREATE TABLE IF NOT EXISTS abonnes (id_abonne INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, prenom VARCHAR(30) NOT NULL);
+                                        </code>
+                                    </strong>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 row">
+                            <ul>
+                                <li>
+                                    <h6>Création de la deuxième table livres</h6>
+                                    <strong>
+                                        <code>
+                                           CREATE TABLE IF NOT EXISTS livres (id_livres INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, auteur VARCHAR(30) NOT NULL,
+                                           titre VARCHAR(30) NOT NULL);
+                                        </code>
+                                    </strong>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 row">
+                            <ul>
+                                <li>
+                                    <h6>Création de la troisième table</h6>
+                                    <strong>
+                                        <code>
+                                           CREATE TABLE IF NOT EXISTS emprunt (
+                                            id_emprunt INT(3) NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+                                            date_sortie DATE NULL,
+                                            date_rendu DATE NULL
+                                            id_livres INT(3)  NULL
+                                            id_abonne INT(3) NULL
+                                            );
+                                        </code>
+                                    </strong>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 ">
+                            <ul>
+                                <li>
+                                    <h6>Création des clefs etrangères</h6>
+                                    dans la table emprun, id_livres sera un champs clefs etrangères en réference au champ id_livre de la table livres <br>
+                                    <strong>
+                                        <code>
+                                           -> ALTER TABLE emprunt ADD FOREIGN KEY (id_livre) REFERENCES bibliotheque.livres(id_livre);
+                                           ->ALTER TABLE emprunt ADD FOREIGN KEY (id_abonne) REFERENCES bibliotheque.abonnes(id_abonne);
+                                        </code>
+                                    </strong>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 ">
+                            <h6 class="text-center">Insérer des donne dans les table</h6>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <ul>
+                                <li>
+                                    <strong>
+                                        <code>
+                                            INSERT INTO abonne (prenom) VALUES <br>
+                                            ('guillaume'),<br>
+                                            ('Benoit'),<br>
+                                            ('Patrick'),<br>
+                                            ('jalloul'),<br>
+                                            ('Jamila');<br>
+                                        </code>
+                                    </strong>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <ul>
+                                <li>
+                                    <strong>
+                                        <code>
+                                            INSERT INTO livres (id_livre, auteur, titre) VALUES <br>
+                                                (100, 'GUY DE MAUPASSANT', 'Une vie'), <br>
+                                                (101, 'GUY DE MAUPASSANT', 'Bel-Ami '), <br>
+                                                (102, 'HONORE DE BALZAC', 'Le père Goriot'), <br>
+                                                (103, 'ALPHONSE DAUDET', 'Le Petit chose'), <br>
+                                                (104, 'ALEXANDRE DUMAS', 'La Reine Margot'), <br>
+                                                (105, 'ALEXANDRE DUMAS', 'Les Trois Mousquetaires');
+                                        </code>
+                                    </strong>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <ul>
+                                <li>
+                                    <code>INSERT INTO emprunt (id_emprunt, id_livre, id_abonne, date_sortie, date_rendu) VALUES <br>
+                                        (NULL, 100, 1, '2014-12-17', '2014-12-18'), <br>
+                                        (NULL, 101, 2, '2014-12-18', '2014-12-20'), <br>
+                                        (NULL, 100, 3, '2014-12-19', '2014-12-22'), <br>
+                                        (NULL, 103, 4, '2014-12-19', '2014-12-22'), <br>
+                                        (NULL, 104, 1, '2014-12-19', '2014-12-28'), <br>
+                                        (NULL, 105, 2, '2015-03-20', '2015-03-26'), <br>
+                                        (NULL, 105, 3, '2015-06-13', NULL), <br>
+                                        (NULL, 100, 2, '2015-06-15', NULL);</code>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 mt-5">
+                            <h6>exemple de requête</h6>
+                            <ul>
+                                <li>
+                                    on cherche les livres qui n'ont pas encor ete rendue : <br>
+                                    <strong>
+                                        <code>
+                                            -> SELECT id_livre FROM emprunt WHERE date_rendu IS NULL;
+                                        </code>
+                                    </strong>
+                                </li>
+                                <li class="alert alert-danger">Pour trouver un resultat qui es null on utillise le terme IS
+                                    <strong>
+                                        <code>
+                                            SELECT id_livre FROM emprunt WHERE date_rendu = NULL;  (AUCUN RESULTAT!!!!)
+                                        </code>
+                                    </strong>
+                                </li>
+                                <li>
+                                    on cherche les titre des livres qui n'ont pas ete rendue : 
+                                    <strong>
+                                        <code>
+                                            SELECT titre FROM livres WHERE id_livre IN (SELECT id_livre FROM emprunt WHERE date_rendu IS NULL);
+
+                                        </code>
+                                    </strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
         </main>
     </div>
 

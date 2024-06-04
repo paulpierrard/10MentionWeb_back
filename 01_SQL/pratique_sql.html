@@ -59,59 +59,84 @@
                     <h3 class="text-center mb-5">BDD employes</h3>
                     <ul>
 
-                        <li>Afficher le nom , le prénom et le service des employés qui ont une lettre e à la fin du prénom et travailent dans le service  commercial ou comptabilité : <br>
+                        <li>1. Afficher le nom , le prénom et le service des employés qui ont une lettre e à la fin du prénom et travailent dans le service  commercial ou comptabilité : <br>
                             <strong>
                                 <code>
-                                    SELECT * FROM employes WHERE prenom LIKE '%e' AND service = "commercial " OR service = "comptabilite";
+                                    SELECT * FROM employes WHERE prenom LIKE '%e' AND (service = "direction" OR service = "comptabilite");                                
                                 </code>
                             </strong>
 
                         </li>
                         <li>
-                            le nom , le prénom et la date d'embauche des employés qui ont été embaucher après 2007 et ont le sexe = 'f ' : <br>
+                            2. le nom , le prénom et la date d'embauche des employés qui ont été embaucher après 2007 et ont le sexe = 'f ' : <br>
                             <strong>
                                 <code>
                                     SELECT nom, prenom, date_embauche FROM `employes` WHERE salaire > "2007-01-01" AND sex="f";
                                 </code>
+                            </strong><br>
+                            ou <br>
+                            <strong>
+                                <code class="text-success">
+                                    SELECT nom, prenom, date_embauche FROM `employes` WHERE sex="f" AND dat_embauche BETWEEN '2022-01-01' AND CURDATE();
+                                </code>
                             </strong>
-
                         </li>
                         <li>
-                            Afficher les différents salaire touchées dans la base entreprise:  <br>
+                            3. Afficher les différents salaire touchées dans la base entreprise:  <br>
                             <strong>
                                 <code>
-
+                                    ???????
+                                </code>
+                            </strong><br>
+                            ou <br>
+                            <strong>
+                                <code class="text-success">
+                                    SELECT salaire FROM employes GROUP BY salaire;
                                 </code>
                             </strong>
 
                         </li>
                         <li>
-                            Afficher les noms des employés qui ont un salaire entre 2300 et 4000 :  <br>
+                           4. Afficher les noms des employés qui ont un salaire entre 2300 et 4000 :  <br>
                             <strong>
                                 <code>
                                     SELECT nom FROM employes WHERE salaire BETWEEN 2300 AND 4000;
                                 </code>
+                            </strong><br>
+                            ou <br>
+                            <strong>
+                                <code class="text-success">
+                                    SELECT nom FROM employes WHERE salaire >= 2300 AND salaire &lt;= 4000;
+                                </code>
                             </strong>
 
                         </li>
                         <li>
-                            Afficher le nombre d'employés par salaire : <br>
+                           5. Afficher le nombre d'employés par salaire : <br>
                             <strong>
                                 <code>
-                                    
+                                    ?????????????
+                                </code>
+                            </strong><br>
+                            ou <br>
+                            <strong>
+                                <code class="text-success">
+                                    SELECT salaire, COUNT(*) AS nbr_employes FROM employes GROUPE BY salaire;
                                 </code>
                             </strong>
 
                         </li>
-                        <li>Afficher la profession de l'employé 980 : <br>
+                        <li>
+                            6. Afficher la profession de l'employé 980 : <br>
                             <strong>
                                 <code>
-                                    SELECT service FROM `employes` WHERE id_employe = "980";
+                                    SELECT service FROM `employes` WHERE id_employe = 980;
                                 </code>
                             </strong>
 
                         </li>
-                        <li>Afficher la date d'embauche de Paul :    <br>
+                        <li>
+                            7. Afficher la date d'embauche de Paul :    <br>
                             <strong>
                                 <code>
                                     SELECT date_embauche FROM `employes` WHERE prenom ="paul";
@@ -119,7 +144,8 @@
                             </strong>
 
                         </li>
-                        <li>Afficher le nombre de commerciaux : <br>
+                        <li>
+                            8. Afficher le nombre de commerciaux : <br>
                             <strong>
                                 <code>
                                     SELECT COUNT(*) AS nbrComerciaux FROM employes WHERE service= "commercial";
@@ -127,74 +153,96 @@
                             </strong>
 
                         </li>
-                        <li>Afficher le coût des commerciaux sur une année : <br>
+                        <li>
+                            9. Afficher le coût des commerciaux sur une année : <br>
                             <strong>
                                 <code>
-
+                                    SELECT SUM(salaire*12) FROM employes WHERE service = 'commercial';
                                 </code>
                             </strong>
 
                         </li>
-                        <li>Afficher le salaire moyen par service : <br>
+                        <li>
+                            10. Afficher le salaire moyen par service : <br>
                             <strong>
                                 <code>
-
+                                    SELECT service, AVG(salaire) FROM employes GROUPE BY service;
                                 </code>
                             </strong>
 
                         </li>
-                        <li>Afficher le nombre de recrutement sur l'année 2022 : <br>
+                        <li>
+                            11. Afficher le nombre de recrutement sur l'année 2022 : <br>
                             <strong>
                                 <code>
-
+                                    SELECT COUNT(*) AS nbr_recutement FROM employes WHERE date_embauche BETWEEN '2022-01-01' AND '2022-12-31';
+                                </code>
+                            </strong><br>
+                            ou <br>
+                            <strong>
+                                <code class="text-success">
+                                    SELECT COUNT(*) AS nbr_recutement FROM employes WHERE date_embauche >= '2022-01-01' AND dat_embauche &lt;='2022-12-31';
+                                </code>
+                            </strong>
+                            <br>
+                            ou <br>
+                            <strong>
+                                <code class="text-success">
+                                    SELECT COUNT(*) AS nbr_recutement FROM employes WHERE date_embauche LIKE '%2022%'
                                 </code>
                             </strong>
 
                         </li>
-                        <li>Augmenter le salaire pour chaque employé de 100€ : <br>
+                        <li>
+                            12. Augmenter le salaire pour chaque employé de 100€ : <br>
                             <strong>
                                 <code>
-
-                                </code>
-                            </strong>
-
-                        </li>
-                        <li>Afficher le nombre de service : <br>
-                            <strong>
-                                <code>
+                                    UPDATE employes SET salaire = salaire + 100;
 
                                 </code>
                             </strong>
 
                         </li>
                         <li>
-                            Afficher 10 employés à partir de l'enregistrement 10 : <br>
+                            13. Afficher le nombre de service : <br>
                             <strong>
                                 <code>
+                                    SELECT COUNT(DISTINCT service) AS nbr_service FROM employes; 
+                                </code>
+                            </strong>
+
+                        </li>
+                        <li>
+                           14. Afficher 10 employés à partir de l'enregistrement 10 : <br>
+                            <strong>
+                                <code>
+                                    SELECT * FROM `employes` LIMIT 10,10;
 
                                 </code>
                             </strong>
 
                         </li>
                         <li>
-                            Afficher les salaires qui sont touchées par plus qu'un employé : <br>
+                           15. Afficher les salaires qui sont touchées par plus qu'un employé : <br>
                             <strong>
                                 <code>
-
+                                    SELECT salaire FROM employes GROUPE BY salaire HAVING COUNT(*) > 1;
                                 </code>
                             </strong>
 
                         </li>
-                        <li>Afficher les informations de l'employé du service commercial gagnant le salaire le plus élevé : <br>
+                        <li>
+                            16. Afficher les informations de l'employé du service commercial gagnant le salaire le plus élevé : <br>
                             <strong>
                                 <code>
-                                    SELECT * FROM `employes` ORDER BY salaire DESC LIMIT 0,1;
+                                    
                                 </code>
                             </strong>
 
 
                         </li>
-                        <li>Afficher l'employé ayant été embauché en dernier : <br>
+                        <li>
+                            17. Afficher l'employé ayant été embauché en dernier : <br>
                             <strong>
                                 <code>
                                     SELECT * FROM `employes` ORDER BY date_embauche DESC LIMIT 0,1;
