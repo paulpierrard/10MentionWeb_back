@@ -985,6 +985,84 @@
                         </div>
                     </div>
                 </div>
+                <div class="row m-2 border border-dark p-5">
+
+                    <div class="col-sm-12">
+                        <h2 class="text-center">14 - Les jointures </h2>
+                        <hr>
+                        <div>
+                            <div class="col-sm-12 mt-5">
+                                <ul>
+                                    <li>
+                                        Les requettes de jointure permette l'extractions des données de plusieurs tables
+                                    </li>
+                                    <li>
+                                        L'avantage des jointure est que l'on peut obtenir dans le résultat finale des colonnes (des champs) issues de plusieurs tables differentes 
+                                    </li>
+                                    <h6>Récapitulatif</h6>
+                                    <li>
+                                        <code>SELECT</code> va comporterla liste des champs que je souhaite afficher dans mon résultat
+                                    </li>
+                                    <li>
+                                        <code>FROM</code> je précise de quelle table je me sert dans ma requête
+                                    </li>
+                                    <li>
+                                       <code> WHERE</code> va me permètre de definire la condition de jointure pour assurer le croisement des données
+                                    </li>
+                                    <li>
+                                        <code>AND/OR </code>: autre condition néssesaire à mon resultat
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 mt-5">
+                            <ul>
+                                <li>
+                                    Dans la bibliothèque, afficher les date auxquelle Guillaume s'est rendu à la bibliothèque pour rempruter ou rendre un livre , on a besoin de trois colone s: nom, prénom, date de rendue
+                                    <br>
+                                    <strong>
+                                        <code>
+                                            SELECT abonnes.prenom, emprunt.date_sortie,emprunt.date_rendu FROM abonnes, emprunt WHERE abonnes.prenom = "guillaume" AND abonnes.id_abonne = emprunt.id_abonne;
+                                        </code>
+                                    </strong> <br>
+                                </li>
+                                <li>
+                                    qui a emprunter le livre une vie en 2014,   afficher le prenom, date de sortie et le tire du livre
+                                    <strong>
+                                        <code>
+
+                                        </code>
+                                    </strong> <br>
+                                </li>
+                                <li>
+                                    afficher le nombre de livre emprunter par chaques abonnes : le prenom , et le nombre de livres emprunter
+                                    <strong>
+                                         <code>
+                                            SELECT abonnes.prenom,COUNT(emprunt.id_livre) FROM abonnes,emprunt WHERE abonnes.id_abonne = emprunt.id_abonne GROUP BY emprunt.id_abonne;
+                                         </code> <br>
+                                    </strong>
+                                </li>
+                                <li>
+                                    Qui a emprunter quoi et quand : prenom titre date de sortie
+                                    <strong>
+                                        <code>
+                                            SELECT abonnes.prenom, emprunt.date_sortie, livres.titre FROM abonnes, emprunt, livres WHERE abonnes.id_abonne = emprunt.id_abonne AND livres.id_livre = emprunt.id_livre
+                                        </code>
+                                    </strong> 
+                                </li>
+                                <li>
+                                    Afficher le prénom des abonee avec l'id des livres emprunter: <br>
+                                    <strong>
+                                        <code>
+                                            SELECT abonnes.prenom, emprunt.id_livre FROM abonnes, emprunt WHERE abonnes.id_abonne = emprunt.id_abonne;ù
+                                        </code>
+                                    </strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
         </main>
     </div>
 

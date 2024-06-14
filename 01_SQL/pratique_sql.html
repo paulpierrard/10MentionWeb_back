@@ -235,7 +235,7 @@
                             16. Afficher les informations de l'employé du service commercial gagnant le salaire le plus élevé : <br>
                             <strong>
                                 <code>
-                                    
+                                    -> SELECT * FROM employes WHERE salaire IN (SELECT MAX(salaire) FROM employes WHERE service = 'commercial');
                                 </code>
                             </strong>
 
@@ -647,7 +647,7 @@
                         Afficher le prénom du stagiaire, le nom du bonbon, la date de consommation pour tous les stagiaires qui ont mangé au moins une fois <br>
                         <strong>
                             <code>
-                                ->  
+                                ->  c
                             </code>
                         </strong>
                     </li>
