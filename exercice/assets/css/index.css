@@ -1,0 +1,25 @@
+:root{
+    font-size: 62.5%;
+}
+
+/* header */
+/* nav */
+nav{
+    
+    background-color: rgba(167, 197, 255, 0.642);
+    
+}
+.navbar-brand img{
+    width: 70px;
+}
+.navbar-nav a{
+   margin-left: 70px;
+   font-size: x-large;
+   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+ /* main */
+ /* form */
+
+ .form-conexion{  /*<= C'est le formulaire de conexinon*/
+
+ } 
