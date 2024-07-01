@@ -44,7 +44,7 @@
                             <a class="nav-link" href="register.php">Inscription</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Conexion</a>
+                            <a class="nav-link" href="authentification.php">Conexion</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Back office</a>

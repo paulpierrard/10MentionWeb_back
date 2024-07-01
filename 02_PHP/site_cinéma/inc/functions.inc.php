@@ -2,10 +2,22 @@
 
 <?php
 
-function debug($var){
+function debug($var)
+{
     echo '<pre class = "border border-dark bg-light text-primary w-50 p-3">';
-        var_dump($var);
+    var_dump($var);
     echo '</pre>';
+}
+
+####################################  fonction d'alèrt  ################################################
+
+function alert(string $contenu, string $class)
+{
+
+    return "<div class=\"alert alert-$class alert-dismissible fade show text-center w-50 m-auto mb-5\" role=\"alert\">
+               $contenu
+                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>
+            </div>";
 }
 
 #####################################  fonction pour la conection à la BDD  ################################################
@@ -44,7 +56,12 @@ function connexionBdd()
         // Sans la variable dsn et les constatntes d'environnement
 
         $pdo = new PDO($dsn, DBUSER, DBPASS);
-        echo "je suis conecetée";
+        // echo "je suis conecetée";
+        //On définit le mode d'erreur de PDO sur Exception
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     } catch (PDOException $e) { // PDOException est une classe qui représente une erreur émise par PDO et $e c'est l'objetde la clase en question qui vas stocker cette erre
 
         die("Erreur : " . $e->getMessage()); // die d'arrêter le PHP et dù ùafficher une erreur en utilisant la méthode getmessage de l'objet $e
@@ -148,7 +165,7 @@ function foreignKey(string $tableF, string $keyF, string $tableP, string $keyP)
 
 // Insription 
 
-function inscriptionUsers(string $lastName, string $firstName, string $pseudo, string $email, string $phone, string $mdp, string $civility, string $birthday, string $address, string $zip, string $city, string $country)
+function inscriptionUsers(string $lastName, string $firstName, string $pseudo, string $email, string $phone, string $mdp, string $civility, string $birthday, string $address, string $zip, string $city, string $country): void
 {
 
     // Les requêtes préparer sont préconisées si vous exécutez plusieurs fois la même requête. Ainsi vous évitez au SGBD de répéter toutes les phases analyse/ interpretation / exécution de la requête (gain de performance). Les requêtes préparées sont aussi utilisées pour nettoyer les données et se prémunir des injections de type SQL.
@@ -181,6 +198,67 @@ function inscriptionUsers(string $lastName, string $firstName, string $pseudo, s
 
 }
 
-// inscriptionUsers();
+// verif email exist
+
+function checkEmailUser(string $email): mixed
+{
+
+    $cnx = connexionBdd();
+
+    $sql = "SELECT * FROM users WHERE email = :email";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+
+        ':email' => $email
+    ));
+    $result = $request->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+//Le paramètre  PDO::FETCH_ASSOC permet de transformer l'objet en un array ASSOCIATIF.On y trouve en indices le nom des champs de la requête SQL.
+/**
+ * Pour informatrion, on peut mettre dans les parenthése de fecth()
+ *  PDO::FETCH_NUM pour obtenir un tableau aux indices numèrique
+ * PDO::FETCH_OBJ pour obtenir un dernier objet
+ * ou encore des () vides pour obtenir un mélange de tableau associatif et indéxé
+ */
+
+
+
+function checkPseudoUser(string $pseudo): mixed
+{
+
+    $cnx = connexionBdd();
+    $sql = "SELECT * FROM users WHERE pseudo = :pseudo";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+
+        ':pseudo' => $pseudo
+    ));
+    $result = $request->fetch(PDO::FETCH_ASSOC);// On peut éviter de mettre cette constanyte comme paramètre de la mèthode fetch() à chaque fois en la définissant dans la connexion de la BDD par défaut (dans le try de la connexion à la BDD -> voir fonction connexionBdd())
+    return $result;
+}
+//Le paramètre  PDO::FETCH_ASSOC permet de transformer l'objet en un array ASSOCIATIF.On y trouve en indices le nom des champs de la requête SQL.
+/**
+ * Pour informatrion, on peut mettre dans les parenthése de fecth()
+ *  PDO::FETCH_NUM pour obtenir un tableau aux indices numèrique
+ * PDO::FETCH_OBJ pour obtenir un dernier objet
+ * ou encore des () vides pour obtenir un mélange de tableau associatif et indéxé
+ */
+
+
+ /////////////////////////Une fonction pour vérifier un utilisateur dans la  BDD  ////////////////////////////////////////////////////////
+ function checkUser(string $pseudo , string $email)
+ {
+ $cnx = connexionBdd();
+ $sql = "SELECT * FROM users WHERE pseudo = :pseudo AND email = :email";
+ $request = $cnx->prepare($sql);
+ $request->execute(array(
+
+     ':pseudo' => $pseudo , 
+     ':email' => $email
+ ));
+ $result = $request->fetch();
+ return $result;
+}
 
 ?>
