@@ -94,7 +94,7 @@ function logOut()
 
         unset($_SESSION['user']);
 
-        header('location:index.php');
+        header('location:'.RACINE_SITE.'index.php');
     }
 }
 logOut();

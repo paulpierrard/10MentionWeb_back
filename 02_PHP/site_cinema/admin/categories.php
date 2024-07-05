@@ -1,6 +1,6 @@
 <?php
 require_once "../inc/functions.inc.php";
-require_once "../inc/header.inc.php";
+
 
 $categories = allCategories();
 
@@ -11,8 +11,8 @@ if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_liCat'])) {
         $id_liCat = htmlentities($_GET['id_liCat']);
         deleteCategorie($id_liCat);
         header('location:categories.php');
-        
-    
+
+
 
 
 
@@ -55,7 +55,7 @@ if (!empty($_POST)) {
 
 
 
-        if (!isset($name) || strlen($name) < 2 || strlen($name) > 15 ) { //preg_match — Effectue une recherche de correspondance avec une expression rationnelle standard
+        if (!isset($name) || strlen($name) < 2 || strlen($name) > 15) { //preg_match — Effectue une recherche de correspondance avec une expression rationnelle standard
 
             $info = alert("Le champs nom n'est pas valide", "danger");
         }
@@ -66,29 +66,37 @@ if (!empty($_POST)) {
 
         listeCategories($name,  $description);
         header('location:categories.php');
-        
     }
 }
 
+if (empty($_SESSION['user'])) {
+    header('location:' . RACINE_SITE . 'authentification.php');
+} else {
+    if ($_SESSION['user']['role'] == 'ROLE_USER') {
+        header('location:' . RACINE_SITE . 'index.php');
+    }
+}
+require_once "../inc/header.inc.php";
 ?>
 
 <main>
 
     <div class="row col-12">
         <div class="col-lg-6">
+            <h2 class="text-center fw-bolder mb-5 text-danger">Gestion des catégories</h2>
             <form action="" method="post" class="">
-                <div class="m-5 ">
-                    <div class="col-md-11 m-5">
+                <div class="p-5 m-5 rounded bg-dark text-danger ">
+                    <div class="col-md-11 m-5 w-50">
                         <label for="name" class="form-label mb-3">Nom de la catégories</label>
                         <input type="text" class="form-control fs-5" id="name" name="name">
                     </div>
                     <div class="col-md-11 m-5">
-                        <label for="description"  height="50px" class="form-label mb-3">Description</label>
-                        <input type="text" class="form-control fs-5" id="description" name="description">
+                        <label for="description" class="form-label mb-3">Description</label>
+                        <textarea class="form-control" rows="10" id="description" name="description"></textarea>
                     </div>
-                </div>
-                <div class="row mt-5">
-                    <button class="w-25 m-auto btn btn-danger btn-lg fs-5" type="submit">Ajouter une catégorie</button>
+                    <div class="row mt-5">
+                        <button class="w-25 m-auto btn btn-danger btn-lg fs-5" type="submit">Ajouter une catégorie</button>
+                    </div>
                 </div>
             </form>
         </div>
