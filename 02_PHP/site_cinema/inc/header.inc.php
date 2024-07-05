@@ -62,7 +62,7 @@
                         ?>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="<?=RACINE_SITE?>profil.php">Compte</a>
+                                <a class="nav-link" href="<?=RACINE_SITE?>profil.php">Compte de <span class="badge rounded-pill text-bg-danger"><?=$_SESSION['user']['firstName']?></span></a>
                             </li>
 
                             <?php
@@ -72,7 +72,7 @@
                             ?>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Back office</a>
+                                    <a class="nav-link" href="<?=RACINE_SITE?>admin/gestion_film.php">Back office</a>
                                 </li>
 
                             <?php

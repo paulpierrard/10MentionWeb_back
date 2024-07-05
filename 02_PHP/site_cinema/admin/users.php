@@ -8,8 +8,9 @@ if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_user'])){
 
     if ($_GET['action'] == 'delete' && !empty($_GET['id_user'])) {
 
-        $id_user = htmlentities($_GET['id_user']);
-        deleteUser($id_user);
+        $idUser = htmlentities($_GET['id_user']);
+
+        deleteUser($iduser);
 
         
 
@@ -20,6 +21,22 @@ if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_user'])){
             © devient &copy;
         */
 
+
+    }
+    if ($_GET['action'] == 'update' && !empty($_GET['id_user'])) {
+
+        $id_user = htmlentities($_GET['id_user']);
+        $user = showUser($idUser);
+        
+        if ($user['role'] == 'ROLE_ADMIN') {
+
+            replaceCategorie('ROLE_USER', $idUser);
+
+        } else {
+        
+            replaceCategorie('ROLE_ADMIN', $idUser);
+        }
+        
 
     }
 
@@ -80,7 +97,12 @@ if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_user'])){
                     <td><?=$user['country']?></td>
                     <td><?=$user['role']?></td>
                     <td class="text-center"><a href="?action=delet&id_user=<?=$user['id_user']?>"><i class="bi bi-trash3"></i></a></td>
-                    <td></td>
+                    <td class="text-center">
+                        <a href="?action=update&id_user=<?=$user['id_user']?>" class="btn btn-danger">
+                            <?= $user['role'] == 'ROLE_USER' ? 'Rôle_admin' : "Rôle_user" ?>
+                        </a>
+                    </td>
+
                 </tr>
 
                 <?php

@@ -5,7 +5,7 @@
 session_start();
 
 //////////////////////////////////constante pour definir le chemin du site/////////////////////////////////////
- // constante qui définit les dosiiers dans lesquels se situe le site pour pouvoir déterminer des chemons absolus à partir de localhost (on ne prends localhost). Ainsi nous écrivons tous les chemins (exp : src, href ) en absolu avec cette constante
+// constante qui définit les dosiiers dans lesquels se situe le site pour pouvoir déterminer des chemons absolus à partir de localhost (on ne prends localhost). Ainsi nous écrivons tous les chemins (exp : src, href ) en absolu avec cette constante
 
 define("RACINE_SITE", "http://10mentionweb_back.local/02_PHP/site_cinema/");
 
@@ -87,16 +87,15 @@ function connexionBdd()
 
 ##########################  fonction pour la deconection #####################"
 
-function logOut(){
+function logOut()
+{
 
-    if(isset($_GET['action']) && $_GET['action'] == 'deconnexion'){
-        
+    if (isset($_GET['action']) && $_GET['action'] == 'deconnexion') {
+
         unset($_SESSION['user']);
 
         header('location:index.php');
-    
     }
-
 }
 logOut();
 
@@ -302,12 +301,12 @@ function checkUserId($id_user)
 
 
 ///////////////////////////////////// 
-function allUsers():mixed
+function allUsers(): mixed
 {
     $cnx = connexionBdd();
     $sql = "SELECT * FROM users";
     $request = $cnx->query($sql);
-    $result = $request->fetchAll();// fetchAll() récupère tout les résultats dans la reqûête et les sort sous forme d'un tableau à 2 dismensions
+    $result = $request->fetchAll(); // fetchAll() récupère tout les résultats dans la reqûête et les sort sous forme d'un tableau à 2 dismensions
 
     return $result;
 }
@@ -315,7 +314,7 @@ function allUsers():mixed
 
 /////////////////// function delet ///////////////
 
-function deleteUser(int $id_user) :void
+function deleteUser(int $id_user): void
 {
 
     $cnx = connexionBdd();
@@ -325,7 +324,88 @@ function deleteUser(int $id_user) :void
 
         ':id_user' => $id_user,
     ));
-
 }
 
+/////////////////////////// fonction pour liste de categories //////////////////
+
+
+function listeCategories(string $name, string $description): void
+{
+
+    // Les requêtes préparer sont préconisées si vous exécutez plusieurs fois la même requête. Ainsi vous évitez au SGBD de répéter toutes les phases analyse/ interpretation / exécution de la requête (gain de performance). Les requêtes préparées sont aussi utilisées pour nettoyer les données et se prémunir des injections de type SQL.
+
+    // 1- On prépare la requête
+    // 2- On lie le marqueur à la reqête 
+    // 3- On exécute la requête  
+
+    $cnx = connexionBdd();
+
+    $sql = "INSERT INTO categories (name ,description) VALUE (:name , :description )";
+
+    $request = $cnx->prepare($sql); //prepare() est une méthode qui permet de préparer la requête sans l'exécuter. Elle contient un marqueur :nom qui est vide et attend une valeur.
+    //$requet est à cette ligne  encore un objet PDOstatement .
+
+    $request->execute(array(
+        ":name" => $name,
+        ":description" => $description,
+    )); // execute permet s'executer toute la requette
+
+}
+/////////////////////////fonction all categories //////////
+
+function allCategories(): mixed
+{
+    $cnx = connexionBdd();
+    $sql = "SELECT * FROM categories";
+    $request = $cnx->query($sql);
+    $result = $request->fetchAll(); // fetchAll() récupère tout les résultats dans la reqûête et les sort sous forme d'un tableau à 2 dismensions
+
+    return $result;
+}
+
+//////////////////////////////  fuction delet categories ///////////////////////////
+
+function deleteCategorie(int $id_category): void
+{
+
+    $cnx = connexionBdd();
+    $sql = "DELETE  FROM categories WHERE id_category = :id_category ;";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+
+        ':id_category' => $id_category,
+    ));
+}
+
+//////////////////////////////////Fonction replace ////////////////////////
+
+function replaceCategorie(string $role, int $id_user): void
+{
+
+    $cnx = connexionBdd();
+    $sql = "UPDATE users SET role = :role WHERE id_user = :id_user";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+
+        ":role" => $role,
+        ':id_user' => $id_user
+    ));
+}
+
+///////////////////////////replace un seul //////////////////
+
+function showUser(int $id_user): mixed
+{
+
+    $cnx = connexionBdd();
+    $sql = "SELECT * FROM users WHERE id_user = :id_user";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+
+        ':id_user' => $id_user
+    ));
+    $result = $request->fetch();
+
+    return $result;
+}
 ?>
