@@ -4,17 +4,14 @@ require_once "../inc/functions.inc.php";
 
 $categories = allCategories();
 
-if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_liCat'])) {
+if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_category'])) {
 
-    if ($_GET['action'] == 'delete' && !empty($_GET['id_liCat'])) {
+    $id_category = htmlentities($_GET['id_category']);
 
-        $id_liCat = htmlentities($_GET['id_liCat']);
-        deleteCategorie($id_liCat);
-        header('location:categories.php');
+    if ($_GET['action'] == 'delete' && !empty($_GET['id_category'])) {
 
 
-
-
+        deleteCategorie($id_category);
 
         /*
            htmlentities :convertit tous les caractères applicables en entités HTML. Cela inclut non seulement les caractères spéciaux comme htmlspecialchars, mais aussi d'autres caractères qui ont des entités HTML (comme les caractères accentués) exemple.
@@ -23,6 +20,11 @@ if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_liCat'])) {
             © devient &copy;
         */
     }
+    if ($_GET['action'] == 'update' && !empty($_GET['id_category'])) {
+
+        $category = showCategoryViaId($id_category);
+        // header('location:categories.php');
+    }
 }
 
 
@@ -30,6 +32,8 @@ if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_liCat'])) {
 
 
 ////////////////////////////////////////////fonction pour catégories /////////////////////////////////////////
+$info = "";
+
 if (!empty($_POST)) {
 
     // On vérifie si un champ est vide
@@ -45,27 +49,49 @@ if (!empty($_POST)) {
     if ($verif == false) {
 
         $info = alert("Veuillez renseigner tout les champs", "danger");
-    } else {
+
+        
+    } else { // tout les champs sont rmplies je passea la verrification des donnée
 
         // on récupére les valeurs de nos champs et on les stocke dans des variables
-        $name = $_POST['name'];
-        $description = $_POST['description'];
+        $name = trim($_POST['name']);
+        $description = trim($_POST['description']);
 
 
 
 
 
-        if (!isset($name) || strlen($name) < 2 || strlen($name) > 15) { //preg_match — Effectue une recherche de correspondance avec une expression rationnelle standard
+        if (!isset($name) || strlen($name) < 2) { //preg_match — Effectue une recherche de correspondance avec une expression rationnelle standard
 
             $info = alert("Le champs nom n'est pas valide", "danger");
         }
-        if (!isset($description) || strlen($description) < 2 || strlen($description) > 100) {
+        if (!isset($description) || strlen($description) < 50) {
 
             $info .= alert("Le champs prenom n'est pas valide", "danger");
-        }
+        } else if (empty($info)) {
 
-        listeCategories($name,  $description);
-        header('location:categories.php');
+            $name = strtolower($name);
+            $name = htmlentities($name);
+            $categorieBdd = allCategories();
+
+            if ($categorieBdd) {
+
+
+                $nfo = alert("la categorie existe deja", "danger");
+            } else {
+                $description = htmlentities($description);
+
+                if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_category'])) {
+                    $id_category = htmlentities($_GET['id_category']);
+                    update($id_category, $name, $description);
+                } else {
+                    listeCategories($name, $description);
+                }
+                
+                // header('location: categorie.php');
+
+            }
+        }
     }
 }
 
@@ -76,71 +102,90 @@ if (empty($_SESSION['user'])) {
         header('location:' . RACINE_SITE . 'index.php');
     }
 }
+
 require_once "../inc/header.inc.php";
 ?>
 
 <main>
 
-    <div class="row col-12">
-        <div class="col-lg-6">
+    <div class="row mt-5" style="padding-top: 8rem;">
+        <div class="col-sm-12 col-md-6 mt-5">
             <h2 class="text-center fw-bolder mb-5 text-danger">Gestion des catégories</h2>
-            <form action="" method="post" class="">
-                <div class="p-5 m-5 rounded bg-dark text-danger ">
-                    <div class="col-md-11 m-5 w-50">
-                        <label for="name" class="form-label mb-3">Nom de la catégories</label>
-                        <input type="text" class="form-control fs-5" id="name" name="name">
+
+
+            <form action="" method="post" class="back">
+
+                <div class="row">
+                    <?= $info; ?>
+                    <div class="col-md-8 mb-5">
+                        <label for="name">Nom de la catégorie</label>
+
+                        <!-- est appelée l'opérateur de coalescence nulle en PHP. Cet opérateur permet de vérifier si une variable est définie et nulle, et de fournir une valeur par défaut si ce n'est pas le cas. -->
+                        <input type="text" id="name" name="name" class="form-control" value="<?= $category['name'] ?? '' ?>">
+
+                        <!-- <input type="text" id="name" name="name" class="form-control" value="<? //=isset($category) ? $category['name'] : ''
+                                                                                                    ?>"> -->
                     </div>
-                    <div class="col-md-11 m-5">
-                        <label for="description" class="form-label mb-3">Description</label>
-                        <textarea class="form-control" rows="10" id="description" name="description"></textarea>
+                    <div class="col-md-12 mb-5">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" class="form-control" rows="10"><?= isset($category) ? $category['description'] : '' ?></textarea>
                     </div>
-                    <div class="row mt-5">
-                        <button class="w-25 m-auto btn btn-danger btn-lg fs-5" type="submit">Ajouter une catégorie</button>
-                    </div>
+
+                </div>
+                <div class="row justify-content-center">
+                    <button type="submit" class="btn btn-danger p-3"><?= isset($category) ? 'modifier une categorie' : 'ajouter une categorie' ?></button>
                 </div>
             </form>
         </div>
-        <div class="col-lg-6">
-            <div class="d-flex flex-column m-auto mt-5 table-responsive">
-                <!-- tableau pour afficher tout les utilisateurs avec des boutons de suppression et de modification -->
-                <h2 class="text-center fw-bolder mb-5 text-danger">Liste des catégories</h2>
-                <table class="table  table-dark table-bordered mt-5">
-                    <thead>
+
+        <div class="col-sm-12 col-md-6 d-flex flex-column mt-5 pe-3">
+            <!-- tableau pour afficher toute les catégories avec des boutons de suppression et de modification -->
+            <h2 class="text-center fw-bolder mb-5 text-danger">Liste des catégories</h2>
+
+
+            <table class="table table-dark table-bordered mt-5 ">
+                <thead>
+                    <tr>
+                        <!-- th*7 -->
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Supprimer</th>
+                        <th>Modifier</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+
+
+                    <?php
+
+                    foreach ($categories as $key => $categorie) {
+
+                    ?>
+
                         <tr>
-                            <!--   th*7   -->
-                            <th>ID</th>
-                            <th>Nom</th>
-                            <th>Description</th>
-                            <th>Supprimer</th>
-                            <th>Modifier Le rôle</th>
+                            <td><?= $categorie['id_category'] ?></td>
+                            <td><?= html_entity_decode(ucfirst($categorie['name'])) ?></td>
+                            <td><?= substr(html_entity_decode($categorie['description']), 0, 100) . ' ...' ?></td>
+                            <td class="text-center"><a href="?action=delete&id_category=<?= $categorie['id_category'] ?>"><i class="bi bi-trash3-fill"></i></a></td>
+                            <td class="text-center"><a href="?action=update&id_category=<?= $categorie['id_category'] ?>"><i class="bi bi-pen-fill"></i></a></td>
                         </tr>
-                    </thead>
-                    <tbody>
 
-                        <?php
+                    <?php
 
-                        foreach ($categories as $key => $categorie) {
+                    }
 
-                        ?>
+                    ?>
+                </tbody>
 
-                            <tr>
-                                <td><?= $categorie['id_category'] ?></td>
-                                <td><?= $categorie['name'] ?></td>
-                                <td><?= $categorie['description'] ?></td>
-                                <td class="text-center"><a href="?action=delete&id_liCat=<?= $categorie['id_category'] ?>"><i class="bi bi-trash3"></i></a></td>
-                                <td class="text-center"><a href=""><i class="bi bi-pen-fill"></i></a></td>
-                            </tr>
+            </table>
 
-                        <?php
 
-                        }
 
-                        ?>
 
-                    </tbody>
-                </table>
 
-            </div>
         </div>
     </div>
 

@@ -1,0 +1,4 @@
+AuthName "dossier destion admin"
+AuthType Basic
+AuthUserFile C:\laragon\www\10MentionWeb_back\02_PHP\site_cinema\admin\.htpasswd
+Require valid-user

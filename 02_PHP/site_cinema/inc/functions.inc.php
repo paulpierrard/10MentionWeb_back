@@ -94,7 +94,7 @@ function logOut()
 
         unset($_SESSION['user']);
 
-        header('location:'.RACINE_SITE.'index.php');
+        header('location:' . RACINE_SITE . 'index.php');
     }
 }
 logOut();
@@ -408,4 +408,190 @@ function showUser(int $id_user): mixed
 
     return $result;
 }
+
+////////////////////////////////////////////////////////////
+
+function showCategorie(int $name): mixed
+{
+
+    $cnx = connexionBdd();
+    $sql = "SELECT * FROM categories WHERE name = :name";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+
+        ':name' => $name
+    ));
+    $result = $request->fetch();
+
+    return $result;
+}
+
+////////////////////////////////////////////////////////////////////
+
+function showCategoryViaId(int $id): mixed
+{
+
+    $cnx = connexionBdd();
+    $sql = "SELECT * FROM categories WHERE id_category = :id";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+
+        ':id' => $id
+    ));
+    $result = $request->fetch();
+
+    return $result;
+}
+
+//////////////////////////////////////////////////////////
+
+function update(int $id_category, string $name, string $description):void{
+    $cnx = connexionBdd();
+    $sql ="UPDATE categories SET name = :name , description = :description WHERE id_category = :id_category  ";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+        ":name" => $name , 
+    ":id_category" => $id_category , 
+    ":description" => $description));
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////  FONCTION POUR FILMES ////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////select film
+function allFilmes(): mixed
+{
+    $cnx = connexionBdd();
+    $sql = "SELECT * FROM films";
+    $request = $cnx->query($sql);
+    $result = $request->fetchAll(); // fetchAll() récupère tout les résultats dans la reqûête et les sort sous forme d'un tableau à 2 dismensions
+
+    return $result;
+}
+
+/////////////////////// insert film
+
+function insertFilms($id_category, $title, $director, $actors, $ageLimit, $duration, $synopsis, $date, $image, $price, $stock): void
+{
+
+    // Les requêtes préparer sont préconisées si vous exécutez plusieurs fois la même requête. Ainsi vous évitez au SGBD de répéter toutes les phases analyse/ interpretation / exécution de la requête (gain de performance). Les requêtes préparées sont aussi utilisées pour nettoyer les données et se prémunir des injections de type SQL.
+
+    // 1- On prépare la requête
+    // 2- On lie le marqueur à la reqête 
+    // 3- On exécute la requête  
+
+    $cnx = connexionBdd();
+
+    $data = [
+        'category_id' => $id_category,
+        'title' => $title,
+        'director' => $director,
+        'actors' => $actors,
+        'ageLimit' => $ageLimit,
+        'duration' => $duration,
+        'synopsis' => $synopsis,
+        'date' => $date,
+        'price' => $price,
+        'stock' => $stock,
+        'image'=> $image
+
+    ];
+
+    // echapper les données et les traiter contre les failles JS (XSS)
+    foreach ($data as $key => $value) {
+
+        $data[$key] = htmlentities($value);
+
+    }
+
+    $sql= "INSERT INTO films (title,  director,  actors,  ageLimit,  duration,  synopsis,  date,  price, stock,  image, category_id) VALUES (:title,  :director,  :actors,  :ageLimit,  :duration,  :synopsis,  :date,  :price, :stock,  :image, :category_id)"; // requête d'insertion que je stock dans une variable
+    $request = $cnx->prepare($sql); // je prépare ma fonction et je l'exécute
+    $request->execute(array(
+       ':title' => $data['title'],
+       ':director' => $data['director'],
+       ':actors' => $data['actors'],
+       ':ageLimit' => $data['ageLimit'],
+       ':duration' => $data['duration'],
+       ':synopsis' => $data['synopsis'],
+       ':date' => $data['date'],
+       ':price' => $data['price'],
+       ':stock' => $data['stock'],
+       ':image' => $data['image'],
+       ':category_id'=>$data['category_id']
+
+    ));
+
+}
+
+
+function verifFilms(string $title ,string $date) :mixed {
+    $cnx = connexionBdd();
+    $sql = "SELECT * FROM films WHERE title = :title AND date = :date";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+
+        ':title' => $title,
+        ':date' => $date
+
+    ));
+    $result = $request->fetch();
+    return $result;
+}
+
+
+///////////////////////////////////////////////////////
+
+function deleteFilms(int $id_film): void
+{
+
+    $cnx = connexionBdd();
+    $sql = "DELETE  FROM films WHERE id_film = :id_film ;";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+
+        ':id_film' => $id_film,
+    ));
+}
+
+
+
+//////////////////////////////////////////////////////////////
+
+function updateFilms(string $role, int $id_user): void
+{
+
+    $cnx = connexionBdd();
+    $sql = "UPDATE films SET role = :role WHERE id_user = :id_user";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+
+        ":role" => $role,
+        ':id_user' => $id_user
+    ));
+}
+
+/////////////////////////////////////////////////////////
+
+
+function showfilmsViaId(int $id_film): mixed
+{
+
+    $cnx = connexionBdd();
+    $sql = "SELECT * FROM films WHERE id_film = :id_film";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+
+        ':id_film' => $id_film
+    ));
+    $result = $request->fetch();
+
+    return $result;
+}
+
 ?>
