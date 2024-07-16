@@ -2,7 +2,7 @@
 
 require_once "inc/functions.inc.php";
 
-if (isset($_GET)) {
+if (isset($_GET) && !empty($_GET)) {
 
     if (isset($_GET['id_category']) && !empty($_GET['id_category'])) {
 
@@ -25,7 +25,7 @@ if (isset($_GET)) {
         $films = allFilmes();
 
     }
-    
+
 } else {
 
     $films = filmByDate();
