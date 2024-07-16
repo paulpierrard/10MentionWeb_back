@@ -69,7 +69,11 @@ if (!empty($_POST)) {
         }
     }
 }
+if (!empty($_SESSION['user'])) {
 
+    header('location:profil.php');
+    
+}
 require_once "inc/header.inc.php";
 ?>
 

@@ -12,6 +12,35 @@ if (empty($_SESSION['user'])) {
     }
 }
 
+
+
+if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_film']) && !empty($_GET['action']) && !empty($_GET['id_film']) && $_GET['action'] == 'delete') {
+
+    $idFilm = htmlentities($_GET['id_film']);
+
+    if (is_numeric($id_film)) {
+
+        $film = showfilmsViaId($id_film);
+
+       if ($film) {
+
+        deleteFilms($idFilm);
+        header('location:films.php');
+
+       } else {
+
+        header('location:films.php');
+
+       }
+       
+
+    }else{
+        header('location:films.php');
+    }
+
+   
+}
+
 require_once "../inc/header.inc.php";
 ?>
 <main>

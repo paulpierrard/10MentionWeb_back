@@ -4,27 +4,37 @@ require_once "../inc/functions.inc.php";
 
 $categories = allCategories();
 
-if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_category'])) {
+if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_category']) && !empty($_GET['action']) && !empty($_GET['id_category'])) {
 
     $id_category = htmlentities($_GET['id_category']);
 
-    if ($_GET['action'] == 'delete' && !empty($_GET['id_category'])) {
-
-
-        deleteCategorie($id_category);
-
-        /*
-           htmlentities :convertit tous les caractères applicables en entités HTML. Cela inclut non seulement les caractères spéciaux comme htmlspecialchars, mais aussi d'autres caractères qui ont des entités HTML (comme les caractères accentués) exemple.
-
-            é devient &eacute;
-            © devient &copy;
-        */
-    }
-    if ($_GET['action'] == 'update' && !empty($_GET['id_category'])) {
+    if (is_numeric($id_category)) {
 
         $category = showCategoryViaId($id_category);
-        // header('location:categories.php');
+
+        if ($category) {
+
+            if ($_GET['action'] == 'delete') {
+
+                deleteCategorie($id_category);
+        
+            }
+            if ($_GET['action'] != 'update') {
+
+                header('location:films.php');
+                
+            }
+        }else {
+
+            header('location:films.php');
+
+        }
+
+    }else{
+        header('location:films.php');
     }
+
+   
 }
 
 

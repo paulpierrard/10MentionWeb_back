@@ -445,14 +445,16 @@ function showCategoryViaId(int $id): mixed
 
 //////////////////////////////////////////////////////////
 
-function update(int $id_category, string $name, string $description):void{
+function update(int $id_category, string $name, string $description): void
+{
     $cnx = connexionBdd();
-    $sql ="UPDATE categories SET name = :name , description = :description WHERE id_category = :id_category  ";
+    $sql = "UPDATE categories SET name = :name , description = :description WHERE id_category = :id_category  ";
     $request = $cnx->prepare($sql);
     $request->execute(array(
-        ":name" => $name , 
-    ":id_category" => $id_category , 
-    ":description" => $description));
+        ":name" => $name,
+        ":id_category" => $id_category,
+        ":description" => $description
+    ));
 }
 
 
@@ -499,7 +501,7 @@ function insertFilms($id_category, $title, $director, $actors, $ageLimit, $durat
         'date' => $date,
         'price' => $price,
         'stock' => $stock,
-        'image'=> $image
+        'image' => $image
 
     ];
 
@@ -507,30 +509,29 @@ function insertFilms($id_category, $title, $director, $actors, $ageLimit, $durat
     foreach ($data as $key => $value) {
 
         $data[$key] = htmlentities($value);
-
     }
 
-    $sql= "INSERT INTO films (title,  director,  actors,  ageLimit,  duration,  synopsis,  date,  price, stock,  image, category_id) VALUES (:title,  :director,  :actors,  :ageLimit,  :duration,  :synopsis,  :date,  :price, :stock,  :image, :category_id)"; // requête d'insertion que je stock dans une variable
+    $sql = "INSERT INTO films (title,  director,  actors,  ageLimit,  duration,  synopsis,  date,  price, stock,  image, category_id) VALUES (:title,  :director,  :actors,  :ageLimit,  :duration,  :synopsis,  :date,  :price, :stock,  :image, :category_id)"; // requête d'insertion que je stock dans une variable
     $request = $cnx->prepare($sql); // je prépare ma fonction et je l'exécute
     $request->execute(array(
-       ':title' => $data['title'],
-       ':director' => $data['director'],
-       ':actors' => $data['actors'],
-       ':ageLimit' => $data['ageLimit'],
-       ':duration' => $data['duration'],
-       ':synopsis' => $data['synopsis'],
-       ':date' => $data['date'],
-       ':price' => $data['price'],
-       ':stock' => $data['stock'],
-       ':image' => $data['image'],
-       ':category_id'=>$data['category_id']
+        ':title' => $data['title'],
+        ':director' => $data['director'],
+        ':actors' => $data['actors'],
+        ':ageLimit' => $data['ageLimit'],
+        ':duration' => $data['duration'],
+        ':synopsis' => $data['synopsis'],
+        ':date' => $data['date'],
+        ':price' => $data['price'],
+        ':stock' => $data['stock'],
+        ':image' => $data['image'],
+        ':category_id' => $data['category_id']
 
     ));
-
 }
 
 
-function verifFilms(string $title ,string $date) :mixed {
+function verifFilms(string $title, string $date): mixed
+{
     $cnx = connexionBdd();
     $sql = "SELECT * FROM films WHERE title = :title AND date = :date";
     $request = $cnx->prepare($sql);
@@ -547,15 +548,15 @@ function verifFilms(string $title ,string $date) :mixed {
 
 ///////////////////////////////////////////////////////
 
-function deleteFilms(int $id_film): void
+function deleteFilms(int $id)
 {
 
     $cnx = connexionBdd();
-    $sql = "DELETE  FROM films WHERE id_film = :id_film ;";
+    $sql = "DELETE  FROM films WHERE id_film = :id";
     $request = $cnx->prepare($sql);
     $request->execute(array(
 
-        ':id_film' => $id_film,
+        ':id' => $id,
     ));
 }
 
@@ -563,34 +564,62 @@ function deleteFilms(int $id_film): void
 
 //////////////////////////////////////////////////////////////
 
-function updateFilms(string $role, int $id_user): void
+function updateFilms(string $role, int $id_film): void
 {
 
     $cnx = connexionBdd();
-    $sql = "UPDATE films SET role = :role WHERE id_user = :id_user";
+    $sql = "UPDATE films SET role = :role WHERE id_film = :id_film";
     $request = $cnx->prepare($sql);
     $request->execute(array(
 
         ":role" => $role,
-        ':id_user' => $id_user
+        ':id_film' => $id_film
     ));
 }
 
 /////////////////////////////////////////////////////////
 
 
-function showfilmsViaId(int $id_film): mixed
+function showfilmsViaId(int $id)
 {
 
+    $cnx = connexionBdd();
+    $sql = "SELECT * FROM films WHERE id_film = :id";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+
+        ':id' => $id
+
+    ));
+
+    $result = $request->fetch();
+
+    return $result;
+}
+
+
+
+
+
+
+
+
+
+//////////////////// exo ///////////////////
+
+
+function verifIdFilmExist($id_film)
+{
+    
     $cnx = connexionBdd();
     $sql = "SELECT * FROM films WHERE id_film = :id_film";
     $request = $cnx->prepare($sql);
     $request->execute(array(
 
         ':id_film' => $id_film
+
     ));
     $result = $request->fetch();
-
     return $result;
 }
 
