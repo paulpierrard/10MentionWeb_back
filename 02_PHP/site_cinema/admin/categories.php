@@ -21,17 +21,17 @@ if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_category']) && !em
             }
             if ($_GET['action'] != 'update') {
 
-                header('location:films.php');
+                header('location:categories.php');
                 
             }
         }else {
 
-            header('location:films.php');
+            header('location:categories.php');
 
         }
 
     }else{
-        header('location:films.php');
+        header('location:categories.php');
     }
 
    
@@ -70,7 +70,6 @@ if (!empty($_POST)) {
 
 
 
-
         if (!isset($name) || strlen($name) < 2) { //preg_match — Effectue une recherche de correspondance avec une expression rationnelle standard
 
             $info = alert("Le champs nom n'est pas valide", "danger");
@@ -78,27 +77,38 @@ if (!empty($_POST)) {
         if (!isset($description) || strlen($description) < 50) {
 
             $info .= alert("Le champs prenom n'est pas valide", "danger");
-        } else if (empty($info)) {
+
+
+        } else if(empty($info)) {
 
             $name = strtolower($name);
             $name = htmlentities($name);
-            $categorieBdd = allCategories();
+            $categorieBdd = showCategorie($name);
+            
+        
+
 
             if ($categorieBdd) {
+               
+
+                $info = alert("la categorie existe deja", "danger");
 
 
-                $nfo = alert("la categorie existe deja", "danger");
             } else {
                 $description = htmlentities($description);
+         
+                if (isset($_GET) && $_GET['action']=='update' && !empty($_GET['id_category'])) {
 
-                if (isset($_GET) && isset($_GET['action']) && isset($_GET['id_category'])) {
                     $id_category = htmlentities($_GET['id_category']);
+                
                     update($id_category, $name, $description);
+
                 } else {
+
                     listeCategories($name, $description);
                 }
                 
-                // header('location: categorie.php');
+                header('location: categories.php');
 
             }
         }

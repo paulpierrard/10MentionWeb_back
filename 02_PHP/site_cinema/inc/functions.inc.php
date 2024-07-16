@@ -411,7 +411,7 @@ function showUser(int $id_user): mixed
 
 ////////////////////////////////////////////////////////////
 
-function showCategorie(int $name): mixed
+function showCategorie(string $name): mixed
 {
 
     $cnx = connexionBdd();
@@ -610,7 +610,7 @@ function showfilmsViaId(int $id)
 
 function verifIdFilmExist($id_film)
 {
-    
+
     $cnx = connexionBdd();
     $sql = "SELECT * FROM films WHERE id_film = :id_film";
     $request = $cnx->prepare($sql);
@@ -623,4 +623,33 @@ function verifIdFilmExist($id_film)
     return $result;
 }
 
+
+//////////////////////////////////////////////////////////////////////////////
+
+
+function filmByDate()
+{
+
+    $cnx = connexionBdd();
+    $sql = "SELECT * FROM films ORDER BY date DESC LIMIT 8";
+    $request = $cnx->query($sql);
+    $result = $request->fetchAll();
+    return $result;
+}
+
+
+///////////////////////////////////////////////////
+
+function filmsByCategory($category_id) :mixed
+{
+
+    $cnx = connexionBdd();
+    $sql = "SELECT * FROM films WHERE category_id = :category_id";
+    $request = $cnx->prepare($sql);
+    $request->execute(array(
+        ':category_id' => $category_id
+    ));
+    $result = $request->fetchAll();
+    return $result;
+}
 ?>

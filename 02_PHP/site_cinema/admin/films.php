@@ -48,6 +48,7 @@ require_once "../inc/header.inc.php";
     <div class="d-flex flex-column m-auto mt-5 table-responsive">
         <!-- tableau pour afficher tout les utilisateurs avec des boutons de suppression et de modification -->
         <h2 class="text-center fw-bolder mb-5 text-danger">Liste des utilisateurs</h2>
+        <a href="gestion_film.php" class="btn align-self-end">Ajouter un film</a>
         <table class="table  table-dark table-bordered mt-5">
             <thead>
                 <tr>
@@ -87,7 +88,7 @@ require_once "../inc/header.inc.php";
                         <td><?= $film['duration'] ?></td>
                         <td><?= $film['synopsis'] ?></td>
                         <td><?= $film['date'] ?></td>
-                        <td><img src="<?= RACINE_SITE ?>assets/<?= $film['image'] ?>" alt=""></td>
+                        <td><img src="<?=RACINE_SITE?>assets/img/<?=$film["image"]?>" alt=""></td>
                         <td><?= $film['price'] ?></td>
                         <td><?= $film['stock'] ?></td>
                         <td class="text-center"><a href="?action=delete&id_film=<?= $film['id_film'] ?>"><i class="bi bi-trash3"></i></a></td>
@@ -105,6 +106,7 @@ require_once "../inc/header.inc.php";
         </table>
 
     </div>
+  
 
 </main>
 
