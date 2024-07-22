@@ -81,7 +81,7 @@ nav .navbar-toggler {
 main {
     padding: 10rem 4rem;
     /* margin-top: 10rem !important; */
-    min-height: 815px;
+    /* min-height: 815px; */
     /* je le met afin d'empêcher le footer de rementer dans la page*/
     transition: all .2s;
 }
@@ -298,4 +298,55 @@ th {
     overflow: hidden !important;
     opacity: 0 !important;
     transition: all .5s;
+}
+
+/* Card profil */
+
+.cardParfum {
+    position: relative;
+    width: 700px;
+    /* height: 500px; */
+    background: #000;
+}
+
+.cardParfum .image {
+    width: 80%;
+    margin: 0 auto;
+    height: 100%;
+    overflow: hidden;
+}
+
+.cardParfum .image img {
+   
+    transition: .5s;
+}
+
+.cardParfum:hover .image img {
+    opacity: .5;
+    transform: translateX(30%);
+}
+
+.cardParfum .details {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 70%;
+    height: 100%;
+    background: var(--red);
+    transition: .5s;
+    transform-origin: left;
+    transform: perspective(2000px) rotateY(-90deg);
+}
+
+.cardParfum:hover .details {
+    transform: perspective(2000px) rotateY(0deg);
+}
+
+.cardParfum .details .center {
+    padding: 80px !important;
+    text-align: center;
+    background: #fff;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }

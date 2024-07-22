@@ -652,4 +652,6 @@ function filmsByCategory($category_id) :mixed
     $result = $request->fetchAll();
     return $result;
 }
+
+////////////////////////////
 ?>
