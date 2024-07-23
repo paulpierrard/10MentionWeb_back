@@ -11,7 +11,7 @@ $photo = "";
 $alt = "";
 if ($_SESSION['user']['civility'] == 'h') {
 
-    $photo = "avatar_h.png";
+    $photo = "surfing_the_net.png";
     $alt = "avatar homme";
 } else {
     $photo = "avatar_f.png";

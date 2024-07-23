@@ -15,7 +15,7 @@ define("RACINE_SITE", "http://10mentionweb_back.local/02_PHP/site_cinema/");
 
 function debug($var)
 {
-    echo '<pre class = "border border-dark bg-light text-primary w-50 p-3">';
+    echo '<pre class = "border border-dark bg-light text-danger w-50 p-3">';
     var_dump($var);
     echo '</pre>';
 }
