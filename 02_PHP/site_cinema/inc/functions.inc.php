@@ -654,4 +654,37 @@ function filmsByCategory($category_id) :mixed
 }
 
 ////////////////////////////
+
+//-------------------------------------------- Calcul du montant total .
+
+function calculMontantTotal(array $tab){
+
+    $montantTotal = 0;
+
+    foreach ($tab as $key) {
+
+        $montantTotal += $key['price'] * $key['quantity'];
+
+    }
+    return $montantTotal;
+    
+}
+
+////////
+
+function createTableOrders(){
+
+    $cnx = connexionBdd();
+    $sql = " CREATE TABLE IF NOT EXISTS orders (
+         id_order INT PRIMARY KEY AUTO_INCREMENT,
+         user_id INT NOT NULL,
+         price FLOAT,
+         created_at DATETIME,
+         is_paid ENUM('0', '1')
+    )";
+    $request = $cnx->exec($sql);
+
+}
+// createTableOrders();
+// foreignKey('orders','user_id', 'users', 'id_user');
 ?>
