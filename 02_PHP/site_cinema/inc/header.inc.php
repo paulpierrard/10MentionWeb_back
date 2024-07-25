@@ -118,7 +118,7 @@
 
 
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= RACINE_SITE ?>boutique/panier.php"><i class="bi bi-cart fs-2"></i></a>
+                            <a class="nav-link" href="<?= RACINE_SITE ?>boutique/panier.php"><i class="bi bi-cart fs-2"><sup><?= (!empty($_SESSION['panier']) && !empty($_SESSION['user'])) ? count($_SESSION['panier']) : '' ?></sup></i></a>
                         </li>
                     </ul>
                 </div>

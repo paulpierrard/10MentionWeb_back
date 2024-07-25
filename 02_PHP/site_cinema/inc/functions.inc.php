@@ -687,4 +687,75 @@ function createTableOrders(){
 }
 // createTableOrders();
 // foreignKey('orders','user_id', 'users', 'id_user');
-?>
+
+
+/////////////////////////////////////
+
+function addOrder(int $user_id, float $price, string $created_at, string $is_paid) :bool{
+
+    $pdo = connexionBdd();
+     $sql = "INSERT INTO orders(user_id, price, created_at, is_paid) VALUES (:user_id, :price, :created_at, :is_paid)";
+     $request = $pdo->prepare($sql);
+     $request->execute(array( 
+          ':user_id'     =>$user_id,
+          ':price'       =>$price, 
+          ':created_at'  =>$created_at, 
+          ':is_paid'     =>$is_paid
+         
+          ));
+        if($request){
+            return true;
+        }
+    
+}
+
+
+////////////////////////////////////////////
+
+function lastId(): array{
+    $pdo = connexionBdd();
+    $sql = "SELECT MAX(id_order) AS lastId FROM orders";
+    $request= $pdo->query($sql);
+    $result= $request->fetch();
+    return $result;
+
+}
+
+
+//////////////////////////////////////
+
+
+
+function addOrderDetails(int $orderId, int $filmId, float $filmPrice, int $quantity) :void{
+
+    $pdo = connexionBdd();
+    $sql = "INSERT INTO order_details(order_id, film_id, price_film, quantity) VALUES (:order_id, :film_id, :price_film,:quantity)";
+    $request = $pdo->prepare($sql);
+    $request->execute(array( 
+         ':order_id'     => $orderId,
+         ':film_id'      => $filmId,
+         ':price_film'   => $filmPrice, 
+         ':quantity'     => $quantity, 
+         ));
+    
+
+}
+
+///////////////////////////////////////////////////////////
+
+
+
+function createTableOrderDetails(){
+
+    $pdo = connexionBdd();
+    $sql = " CREATE TABLE IF NOT EXISTS order_details (
+         order_id INT NOT NULL,
+         film_id INT NOT NULL,
+         price_film FLOAT NOT NULL,
+         quantity INT NOT NULL
+        
+    )";
+    $request = $pdo->exec($sql);
+
+}
+createTableOrderDetails();

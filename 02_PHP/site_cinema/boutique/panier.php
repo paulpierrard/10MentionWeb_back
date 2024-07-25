@@ -41,8 +41,9 @@ if (isset($_POST) && !empty($_POST)) {
                 $_SESSION['panier'][$key]['quantity'] += $quantite;
                 //-------- film n°1 ------ : quantité = quantité initiale + la nouvelle quantité
                 $filmNotExiste = true;
-                break;
+                // break;
             }
+            header("location:" . RACINE_SITE . "panier.php");
         }
 
         if ($filmNotExiste == false) { // si le film n'existe pas dans le panier
@@ -57,7 +58,7 @@ if (isset($_POST) && !empty($_POST)) {
             ];
 
             $_SESSION['panier'][] = $newFilm; // j'ajoute le film avec toutes ses information dans $_SESSION['panier']
-
+            header("location:" . RACINE_SITE . "panier.php");
         }
     }
 }
